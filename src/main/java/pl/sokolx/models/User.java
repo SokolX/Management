@@ -7,6 +7,24 @@ public class User {
     private String userPassword;
     private String userFirstName;
     private String userLastName;
+    private RoleType roleType;
+
+    public User(Integer userId, String userLogin, String userPassword, String userFirstName, String userLastName, RoleType roleType) {
+        this.userId = userId;
+        this.userLogin = userLogin;
+        this.userPassword = userPassword;
+        this.userFirstName = userFirstName;
+        this.userLastName = userLastName;
+        this.roleType = roleType;
+    }
+
+    public User(String userLogin, String userPassword, String userFirstName, String userLastName, RoleType roleType) {
+        this.userLogin = userLogin;
+        this.userPassword = userPassword;
+        this.userFirstName = userFirstName;
+        this.userLastName = userLastName;
+        this.roleType = roleType;
+    }
 
     public User(Integer userId, String userLogin, String userPassword, String userFirstName, String userLastName) {
         this.userId = userId;
@@ -56,6 +74,10 @@ public class User {
         return userLastName;
     }
 
+    public RoleType getUserRole() {
+        return roleType;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -64,6 +86,7 @@ public class User {
                 ", userPassword='" + userPassword + '\'' +
                 ", userFirstName='" + userFirstName + '\'' +
                 ", userLastName='" + userLastName + '\'' +
+                ", roleType=" + roleType +
                 '}';
     }
 }

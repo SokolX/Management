@@ -1,7 +1,9 @@
 package pl.sokolx.models;
 
 import pl.sokolx.api.UserDao;
+import pl.sokolx.api.UserRoleDao;
 import pl.sokolx.dao.UserDaoImpl;
+import pl.sokolx.dao.UserRoleDaoImpl;
 
 import java.io.*;
 import java.util.Scanner;
@@ -9,7 +11,8 @@ import java.util.Scanner;
 public class Main {
 
     static Scanner scanner = new Scanner(System.in);
-    //static UserDao userDao = new UserDao();
+    static UserRoleDao userRoleDao = new UserRoleDaoImpl();
+    static UserDao userDao = new UserDaoImpl();
 
     public static void main(String[] args) throws IOException {
 /*
@@ -46,13 +49,16 @@ public class Main {
         */
 
         UserDaoImpl userDaoImpl = new UserDaoImpl();
+        createUser();
+        System.out.println(userDaoImpl.getAllUsers());
+        updateUser();
         System.out.println(userDaoImpl.getAllUsers());
     }
 
-    /*
+
     public static void createUser() {
 
-        String login, firstName, lastName, password;
+        String login, firstName, lastName, password, role;
 
 
         System.out.println("Type a login: ");
@@ -63,8 +69,9 @@ public class Main {
         firstName = scanner.next();
         System.out.println("Type a last name: ");
         lastName = scanner.next();
-
-        User newUser = new User(login, password, firstName, lastName);
+        System.out.println("Type user role: {USER, ADMIN) ");
+        role = scanner.next();
+        User newUser = new User(login, password, firstName, lastName, RoleType.valueOf(role));
 
         userDao.createUser(newUser);
         System.out.println("Utworzono Usera: " + newUser.toString());
@@ -85,24 +92,28 @@ public class Main {
     }
     public static void updateUser() {
 
-        String login, firstName, lastName, password;
-Integer id;
+        String login, firstName, lastName, password, role;
+        Integer id;
 
         System.out.println("Type id user id to edit: ");
         id = scanner.nextInt();
+        System.out.println("Type a new login: ");
+        login = scanner.next();
+        System.out.println("Type a new password: ");
+        password = scanner.next();
         System.out.println("Type a first name: ");
         firstName = scanner.next();
         System.out.println("Type a last name: ");
         lastName = scanner.next();
-        System.out.println("Type a new password: ");
-        password = scanner.next();
+        System.out.println("Type user role: {USER, ADMIN) ");
+        role = scanner.next();
 
-        User newUser = new User(id, password, firstName, lastName);
+        User newUser = new User(id, login, password, firstName, lastName, RoleType.valueOf(role));
 
         userDao.updateUser(newUser);
         System.out.println("User changed: " + newUser.toString());
 
 
     }
-    */
+
 }
