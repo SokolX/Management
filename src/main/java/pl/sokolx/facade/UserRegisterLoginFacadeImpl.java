@@ -17,11 +17,12 @@ public class UserRegisterLoginFacadeImpl implements UserRegisterLoginFacade {
     }
 
     public static UserRegisterLoginFacade getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new UserRegisterLoginFacadeImpl();
         }
         return instance;
     }
+
     @Override
     public String registerUser(User user) {
         try {

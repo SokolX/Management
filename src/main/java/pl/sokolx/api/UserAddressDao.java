@@ -1,13 +1,13 @@
 package pl.sokolx.api;
 
-import pl.sokolx.models.UserRole;
+import pl.sokolx.models.UserAddress;
 
 import java.util.List;
 
-public interface UserRoleDao {
+public interface UserAddressDao {
 
-    public List<UserRole> getAllUserRoles();
-    public UserRole getUserRoleById(Integer roleId);
-    public Integer getUserRoleIdByName(String roleName);
+    List<UserAddress> getAllAddress();
+
+    void addAddress(UserAddress userAddress);
 
 }

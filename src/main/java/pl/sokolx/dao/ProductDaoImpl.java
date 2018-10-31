@@ -1,10 +1,9 @@
 package pl.sokolx.dao;
 
 import pl.sokolx.api.ProductDao;
-import pl.sokolx.models.Boots;
-import pl.sokolx.models.Cloth;
 import pl.sokolx.models.Product;
-import pl.sokolx.models.ProductType;
+import pl.sokolx.models.parser.ProductParser;
+import pl.sokolx.utils.FileUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,100 +11,85 @@ import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
 
+    private static final String FILE_NAME = "/home/sokolx/IdeaProjects/Management/target/products.txt";
+    private static ProductDao instance = null;
+
+    private ProductDaoImpl() {
+        try {
+            FileUtils.createNewFile(FILE_NAME);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ProductDao getInstance() {
+        if (instance == null) {
+            instance = new ProductDaoImpl();
+        }
+
+        return instance;
+    }
+
     @Override
-    public void saveProduct(Product product) throws FileNotFoundException {
-        String fileName = "/home/sokolx/IdeaProjects/Management/target/products.txt";
-        FileOutputStream fileOutputStream = new FileOutputStream(fileName, true);
-        PrintWriter printWriter = new PrintWriter(fileOutputStream);
-
-        printWriter.write(product.toString() + "\n");
-
-        printWriter.close();
+    public void saveProduct(Product product) throws IOException {
+        List<Product> products = getAllProducts();
+        products.add(product);
+        saveProducts(products);
     }
 
     @Override
     public void saveProducts(List<Product> products) throws FileNotFoundException {
-        String fileName = "/home/sokolx/IdeaProjects/Management/target/products.txt";
-        FileOutputStream fileOutputStream = new FileOutputStream(fileName, true);
-        PrintWriter printWriter = new PrintWriter(fileOutputStream);
-
-        for (Product product : products) {
+        FileUtils.clearFile(FILE_NAME);
+        PrintWriter printWriter = new PrintWriter(new FileOutputStream(FILE_NAME, true));
+        for(Product product : products) {
             printWriter.write(product.toString() + "\n");
         }
-
         printWriter.close();
     }
 
     @Override
-    public void removeProductById(Long productId) {
+    public void removeProductById(Long productId) throws IOException {
+        List<Product> products = getAllProducts();
 
+        for(int i=0;i<products.size(); i++) {
+            boolean isFoundProduct = products.get(i).getProductId().equals(productId);
+            if (isFoundProduct) {
+                products.remove(i);
+            }
+        }
+
+        saveProducts(products);
     }
 
     @Override
-    public void removeProductByName(String productName) {
+    public void removeProductByName(String productName) throws IOException {
+        List<Product> products = getAllProducts();
 
+        for(int i=0;i<products.size(); i++) {
+            boolean isFoundProduct = products.get(i).getProductName().equals(productName);
+            if (isFoundProduct) {
+                products.remove(i);
+            }
+        }
+
+        saveProducts(products);
     }
 
     @Override
     public List<Product> getAllProducts() throws IOException {
-        String fileNameProducts = "/home/sokolx/IdeaProjects/Management/target/products.txt";
         List<Product> products = new ArrayList<Product>();
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(fileNameProducts));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(FILE_NAME));
 
         String readLine = bufferedReader.readLine();
         while(readLine != null) {
-
-            String [] productToList = readLine.split(",");
-
-            Long productId = Long.parseLong(productToList[0]);
-            String productName = productToList[1];
-            Float productPrice = Float.parseFloat(productToList[2]);
-            Float productWeight = Float.parseFloat(productToList[3]);
-            String productColor = productToList[4];
-            Integer productCount = Integer.parseInt(productToList[5]);
-            String productType = productToList[6];
-
-            if(productType.equals("PRODUCTS")) {
-                Product nowy = new Product(productId, productName, productPrice, productWeight, productColor, productCount, ProductType.PRODUCT);
-                products.add(nowy);
-
-            } else if(productType.equals("BOOTS")) {
-
-                Integer bootSize = Integer.parseInt(productToList[7]);
-                Boolean bootsIsNaturalSkin = Boolean.valueOf(productToList[8]);
-                Boots nowy = new Boots(productId, productName, productPrice, productWeight, productColor, productCount, ProductType.BOOTS,
-                        bootSize, bootsIsNaturalSkin);
-                products.add(nowy);
-
-            } else if(productType.equals("CLOTH")) {
-                String clothSize = productToList[7];
-                String clothMaterial = productToList[8];
-                Cloth nowy = new Cloth(productId, productName, productPrice, productWeight, productColor, productCount, ProductType.CLOTH,
-                        clothSize, clothMaterial);
-                products.add(nowy);
+            Product product = ProductParser.stringToProduct(readLine);
+            if (product != null) {
+                products.add(product);
             }
-
             readLine = bufferedReader.readLine();
         }
-
         bufferedReader.close();
 
-
-        for (Product product1 : products) {
-            System.out.println("id = " + product1.getProductId() + ", productName: " + product1.getProductName());
-        }
-
         return products;
-
-    }
-
-    @Override
-    public Product getProductById(Long productId) {
-        return null;
-    }
-
-    @Override
-    public Product getProductByProductName(String productName) {
-        return null;
     }
 }

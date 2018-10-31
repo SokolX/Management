@@ -4,11 +4,12 @@ import pl.sokolx.api.UserDao;
 import pl.sokolx.api.UserService;
 import pl.sokolx.dao.UserDaoImpl;
 import pl.sokolx.exception.UserLoginAlreadyExistException;
+import pl.sokolx.exception.UserShortLengthLoginException;
+import pl.sokolx.exception.UserShortLengthPasswordException;
 import pl.sokolx.models.User;
 import pl.sokolx.validator.UserValidator;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -26,48 +27,35 @@ public class UserServiceImpl implements UserService {
         }
         return instance;
     }
-    public List<User> getAllUsers() throws IOException {
+
+    public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
 
-    public boolean addUser(User user) {
-        try {
-            if (isLoginAlreadyExist(user.getUserLogin())) {
-                throw new UserLoginAlreadyExistException();
-            }
-
-            if (userValidator.isValidate(user)) {
-                userDao.createUser(user);
-                return true;
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+    public boolean addUser(User user) throws UserLoginAlreadyExistException, UserShortLengthLoginException, UserShortLengthPasswordException {
+        if (isLoginAlreadyExist(user.getUserLogin())) {
+            throw new UserLoginAlreadyExistException();
         }
+
+        if (userValidator.isValidate(user)) {
+            userDao.saveUser(user);
+            return true;
+        }
+
         return false;
     }
 
-    /*
-    public void removeUserById(Integer userId) {
-        for(int i=0;i<users.size();i++){
-
-            User userFromList = users.get(i);
-
-            if (userFromList.getUserId().equals(userId)) {
-
-                users.remove(i);
-
-                break;
-            }
-        }
+    public void removeUserById(Long userId) {
+        userDao.removeUserById(userId);
     }
-*/
+
     private boolean isLoginAlreadyExist(String login) {
         User user = getUserByLogin(login);
 
         return user != null;
     }
 
-    public User getUserById(Long userId) throws IOException {
+    public User getUserById(Long userId) {
         List<User> users = getAllUsers();
 
         for (User user : users
@@ -83,23 +71,18 @@ public class UserServiceImpl implements UserService {
     }
 
     public User getUserByLogin(String login) {
-        List<User> users = null;
 
-        try {
-            users = getAllUsers();
-            for (User user : users
-            ) {
+        List<User> users = getAllUsers();
+
+            for (User user : users) {
                 boolean isFoundUser = user.getUserLogin().equals(login);
                 if (isFoundUser) {
                     return user;
                 }
 
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        return null;
+            return null;
     }
 
     public boolean isCorrectLoginAndPassword(String login, String password) {

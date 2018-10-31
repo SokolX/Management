@@ -24,7 +24,7 @@ public class UserRole {
 
     @Override
     public String toString() {
-        return "UserRole{" +
+        return "UserAddress{" +
                 "roleId=" + roleId +
                 ", roleName=" + roleName +
                 '}';

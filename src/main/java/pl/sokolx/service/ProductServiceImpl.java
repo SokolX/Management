@@ -1,73 +1,112 @@
 package pl.sokolx.service;
 
+import pl.sokolx.api.ProductDao;
 import pl.sokolx.api.ProductService;
+import pl.sokolx.dao.ProductDaoImpl;
+import pl.sokolx.exception.ProductCountNegativeException;
+import pl.sokolx.exception.ProductNameEmptyException;
+import pl.sokolx.exception.ProductPriceNoPositiveException;
+import pl.sokolx.exception.ProductWeightNoPositiveException;
 import pl.sokolx.models.Product;
+import pl.sokolx.validator.ProductValidator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
 
-    List<Product> products;
+    private static ProductServiceImpl instance = null;
+    private ProductDao productDao = ProductDaoImpl.getInstance();
+    private ProductValidator productValidator = ProductValidator.getInstance();
 
     public ProductServiceImpl() {
-        this.products = new ArrayList<Product>();
     }
 
-    public ProductServiceImpl(List<Product> products) {
-        this.products = products;
-    }
+    public static ProductServiceImpl getInstance() {
+        if(instance == null) {
+            instance = new ProductServiceImpl();
+        }
 
-    @Override
-    public List<Product> getAllProducts() {
-        return products;
-    }
-
-    @Override
-    public int getCounterProducts() {
-        return products.size();
+        return instance;
     }
 
     @Override
-    public Product getProductByProductName(String productName) {
+    public List<Product> getAllProducts() throws IOException {
+        return productDao.getAllProducts();
+    }
+
+    @Override
+    public Integer getCountProducts() throws IOException {
+        return getAllProducts().size();
+    }
+
+
+    public Product getProductByProductName(String productName) throws IOException {
+
+        List<Product> products = getAllProducts();
 
         for (Product product : products) {
-            if(product.getProductName().equals(productName)) {
+            boolean isFoundProduct = product.getProductName().equals(productName);
+
+            if (isFoundProduct) {
                 return product;
             }
         }
         return null;
     }
 
-    @Override
-    public boolean counterProductIsBiggerThanZero(String productName) {
+
+    public Product getProductByProductId(Long productId) throws IOException {
+
+        List<Product> products = getAllProducts();
 
         for (Product product : products) {
-            if(product.getProductName().equals(productName)) {
-                return true;
+            boolean isFoundProduct = product.getProductId().equals(productId);
+
+            if (isFoundProduct) {
+                return product;
             }
         }
+        return null;
+    }
 
+    public void removeProduct(String productName) throws Exception {
+        productDao.removeProductByName(productName);
+    }
+
+    public boolean isProductExist(String productName) throws IOException {
+        Product product = null;
+        product = getProductByProductName(productName);
+        return product == null;
+    }
+
+    public boolean isProductExist(Long productId) throws IOException {
+        Product product = null;
+        product = getProductByProductId(productId);
+
+        return product == null;
+    }
+
+    public boolean isProductOnWarehouse(String productName) {
+        try {
+            for(Product product : getAllProducts()) {
+                if (isProductExist(productName) && product.getProductCount() > 0) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
-    @Override
-    public boolean productNameDoesExist(String productName) {
-        for (Product product : products) {
-            if(product.getProductName().equals(productName)) {
-                return true;
-            }
+    public boolean saveProduct(Product product) throws IOException, ProductWeightNoPositiveException, ProductNameEmptyException, ProductCountNegativeException, ProductPriceNoPositiveException {
+        if (productValidator.isValidate(product)) {
+            productDao.saveProduct(product);
+            return true;
         }
-        return false;
-    }
 
-    @Override
-    public boolean productByIdDoesExist(Long productId) {
-        for (Product product : products) {
-            if(product.getProductId().equals(productId)) {
-                return true;
-            }
-        }
         return false;
     }
 }

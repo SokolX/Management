@@ -17,50 +17,45 @@ public class ProductValidator {
     public static ProductValidator getInstance() {
         if (instance == null) {
             instance = new ProductValidator();
-        }
+        };
 
         return instance;
     }
 
-    public boolean isValidate(Product product) throws ProductNameEmptyException, ProductCountNegativeException, ProductWeightNoPositiveException, ProductPriceNoPositiveException {
-
-        if(isProductNameEmpty(product.getProductName())) {
-            throw new ProductNameEmptyException("Product name cannot be empty.");
+    public boolean isValidate(Product product) throws ProductNameEmptyException, ProductWeightNoPositiveException, ProductCountNegativeException, ProductPriceNoPositiveException {
+        if (isPriceNoPositive(product.getProductPrice())) {
+            throw new ProductPriceNoPositiveException("Product price is no positive.");
         }
 
-        if(isProductCountNegative(product.getProductCount())) {
+        if (isCountNegative(product.getProductCount())) {
             throw new ProductCountNegativeException("Product count is less than 0.");
         }
 
-        if(isProductWeightNoPositive(product.getProductWeight())) {
+        if (isWeightNoPositive(product.getProductWeight())) {
             throw new ProductWeightNoPositiveException("Product weight is less or equals 0.");
         }
 
-        if(isProductPriceNoPositive(product.getProductPrice())) {
-            throw new ProductPriceNoPositiveException("Product Price is no positive");
+        if (isNameEmpty(product.getProductName())) {
+            throw new ProductNameEmptyException("Product name cannot be empty.");
         }
 
         return true;
-
     }
 
-
-    private boolean isProductCountNegative(int productCount) {
-        return productCount <= 0;
+    private boolean isNameEmpty(String productName) {
+        return productName.length() == 0;
     }
 
-    private boolean isProductWeightNoPositive(float weight) {
-        return weight <= 0;
+    private boolean isWeightNoPositive(Float weight) {
+        return weight <= 0.0d;
     }
 
-    private boolean isProductPriceNoPositive(double price) {
+    private boolean isCountNegative(Integer productCount) {
+        return productCount < 0;
+    }
+
+    private boolean isPriceNoPositive(Double price) {
         return price <= 0;
     }
-    private boolean isProductNameEmpty(String productName) {
-        return productName == null;
-    }
-
-
-
 
 }

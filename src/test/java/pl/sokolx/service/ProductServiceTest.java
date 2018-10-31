@@ -1,15 +1,5 @@
 package pl.sokolx.service;
 
-import org.junit.Assert;
-import org.junit.Test;
-import pl.sokolx.models.Boots;
-import pl.sokolx.models.Cloth;
-import pl.sokolx.models.Product;
-import pl.sokolx.models.ProductType;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class ProductServiceTest {
 /*
     @Test

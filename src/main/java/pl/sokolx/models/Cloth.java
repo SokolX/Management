@@ -1,29 +1,33 @@
 package pl.sokolx.models;
 
+import pl.sokolx.models.enums.Color;
+import pl.sokolx.models.enums.Material;
+import pl.sokolx.models.enums.ProductSeparators;
+
 public class Cloth extends Product {
 
     private String clothSize;
-    private String clothMaterial;
-    private ProductType productType;
+    private Material material;
 
-
-    public Cloth(Long productId, String productName, double productPrice, float productWeight, String productColor, int productCount, ProductType productType, String clothSize, String clothMaterial) {
-        super(productId, productName, productPrice, productWeight, productColor, productCount, productType);
-        this.productType = ProductType.CLOTH;
+    public Cloth(Long productId, String productName, double productPrice, float productWeight, Color productColor, int productCount, String clothSize, Material material) {
+        super(productId, productName, productPrice, productWeight, productColor, productCount);
         this.clothSize = clothSize;
-        this.clothMaterial = clothMaterial;
+        this.material = material;
     }
 
     public String getClothSize() {
         return clothSize;
     }
 
-    public String getClothMaterial() {
-        return clothMaterial;
+    public Material getMaterial() {
+        return material;
     }
 
     @Override
     public String toString() {
-        return super.toString() + "," + productType + "," + clothSize + "," + clothMaterial;
+        return ProductSeparators.BOOTS_ID
+                + ProductSeparators.PRODUCT_SEPARATOR.toString()
+                + getBasicProductString()
+                + clothSize+ ProductSeparators.PRODUCT_SEPARATOR.toString() + material;
     }
 }

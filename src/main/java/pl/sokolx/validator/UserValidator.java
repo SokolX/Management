@@ -24,11 +24,11 @@ public class UserValidator {
 
     public boolean isValidate(User user) throws UserShortLengthPasswordException, UserShortLengthLoginException {
 
-        if(isPasswordLengthNoEnough(user.getUserPassword())) {
+        if (isPasswordLengthNoEnough(user.getUserPassword())) {
 
             throw new UserShortLengthPasswordException("Password is too short");
 
-        } else if(isLoginLengthNoEnough(user.getUserLogin())) {
+        } else if (isLoginLengthNoEnough(user.getUserLogin())) {
 
             throw new UserShortLengthLoginException("Login " + user.getUserLogin() + " is too short");
 

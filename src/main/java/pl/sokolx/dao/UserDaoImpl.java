@@ -1,7 +1,7 @@
 package pl.sokolx.dao;
+
 import pl.sokolx.api.UserDao;
 import pl.sokolx.api.UserRoleDao;
-import pl.sokolx.models.RoleType;
 import pl.sokolx.models.User;
 import pl.sokolx.models.UserRole;
 
@@ -51,7 +51,7 @@ public class UserDaoImpl implements UserDao {
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
-                Integer id = resultSet.getInt("user_id");
+                Long id = resultSet.getLong("user_id");
                 String userName = resultSet.getString("user_login");
                 String userPassword = resultSet.getString("user_password");
                 String userFirstName = resultSet.getString("user_first_name");
@@ -70,7 +70,7 @@ public class UserDaoImpl implements UserDao {
         return users;
     }
 
-    public void createUser(User user) {
+    public void saveUser(User user) {
         PreparedStatement statement;
         try {
             Integer roleId = userRoleDao.getUserRoleIdByName(user.getUserRole().name());
@@ -89,13 +89,28 @@ public class UserDaoImpl implements UserDao {
     }
 
 
-    public void deleteUser(String lastName) {
+    public void removeUserById(Long userId) {
         PreparedStatement statement;
         try {
-            String query = "delete from " + tableName + " where last_name=?";
+            String query = "delete from " + tableName + " where user_id=?";
+            statement = connection.prepareStatement(query);
+
+            statement.setLong(1, userId);
+
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeUserByLogin(String login) {
+        PreparedStatement statement;
+        try {
+            String query = "delete from " + tableName + " where user_login=?";
 
             statement = connection.prepareStatement(query);
-            statement.setString(1, lastName);
+            statement.setString(1, login);
 
             statement.execute();
             statement.close();
@@ -109,7 +124,7 @@ public class UserDaoImpl implements UserDao {
         PreparedStatement statement;
         try {
             Integer roleId = userRoleDao.getUserRoleIdByName(user.getUserRole().name());
-            String query = "update " + tableName + " set user_login =?, user_password = ?, user_first_name = ?, user_last_name = ?, role_id = ? where user_id =?" ;
+            String query = "update " + tableName + " set user_login =?, user_password = ?, user_first_name = ?, user_last_name = ?, role_id = ? where user_id =?";
             statement = connection.prepareStatement(query);
 
             statement.setString(1, user.getUserLogin());
@@ -117,7 +132,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(3, user.getUserFirstName());
             statement.setString(4, user.getUserLastName());
             statement.setInt(5, roleId);
-            statement.setInt(6, user.getUserId());
+            statement.setLong(6, user.getUserId());
 
 
             statement.execute();

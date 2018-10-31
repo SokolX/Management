@@ -2,6 +2,7 @@ package pl.sokolx.dao;
 
 import pl.sokolx.api.UserRoleDao;
 import pl.sokolx.models.RoleType;
+import pl.sokolx.models.UserAddress;
 import pl.sokolx.models.UserRole;
 
 import java.sql.*;
@@ -21,14 +22,15 @@ public class UserRoleDaoImpl implements UserRoleDao {
     public UserRoleDaoImpl() {
         init();
     }
+
     private void init() {
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                connection = DriverManager.getConnection("jdbc:mysql://localhost/"+databaseName+"?useSSL=false", user, password);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/" + databaseName + "?useSSL=false", user, password);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
     @Override
     public List<UserRole> getAllUserRoles() {
