@@ -19,7 +19,6 @@ public class ProductFacadeImpl implements ProductFacade {
     private final ProductService productService = ProductServiceImpl.getInstance();
 
     private ProductFacadeImpl() {
-
     }
 
     public static ProductFacade getInstance() {
@@ -30,7 +29,7 @@ public class ProductFacadeImpl implements ProductFacade {
     public String createProduct(Product product) {
         try {
             productService.saveProduct(product);
-            return "Create product "  + product;
+            return "Create product " + product;
         } catch (IOException e) {
             e.printStackTrace();
             return "[IOException] Error while add product to database";

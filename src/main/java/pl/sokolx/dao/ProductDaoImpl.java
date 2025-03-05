@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
 
-    private static final String FILE_NAME = "/home/sokolx/IdeaProjects/Management/target/products.txt";
+    private static final String FILE_NAME = "./target/products.txt";
     private static ProductDao instance = null;
 
     private ProductDaoImpl() {

@@ -17,8 +17,8 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private static ProductServiceImpl instance = null;
-    private ProductDao productDao = ProductDaoImpl.getInstance();
-    private ProductValidator productValidator = ProductValidator.getInstance();
+    private final ProductDao productDao = ProductDaoImpl.getInstance();
+    private final ProductValidator productValidator = ProductValidator.getInstance();
 
     public ProductServiceImpl() {
     }

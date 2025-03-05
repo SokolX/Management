@@ -1,6 +1,0 @@
-pl/sokolx/models/Boots.class
-pl/sokolx/exception/UserLoginAlreadyExistException.class
-pl/sokolx/models/Product.class
-pl/sokolx/models/ProductType.class
-pl/sokolx/models/Cloth.class
-pl/sokolx/exception/ProductPriceNoPositiveException.class

@@ -1,248 +1,231 @@
 package pl.sokolx.service;
 
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import pl.sokolx.models.Boots;
+import pl.sokolx.models.Cloth;
+import pl.sokolx.models.Product;
+import pl.sokolx.models.enums.Color;
+import pl.sokolx.models.enums.Material;
+import pl.sokolx.models.enums.SkinType;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 public class ProductServiceTest {
-/*
+
+    ProductServiceImpl sut = new ProductServiceImpl();
+
     @Test
-    public void testGetAllProducts() {
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+    public void testGetAllProducts() throws IOException {
+        //given
+        List<Product> products = prepareProductList();
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        List<Product> productsFromTestClass = productServiceImpl.getAllProducts();
+        //when
+        List<Product> productsFromTestClass = sut.getAllProducts();
 
-        Assert.assertEquals(products, productsFromTestClass);
+        //then
+        assertEquals(products, productsFromTestClass);
     }
 
     @Test
-    public void testGetAllProductsNotEquals() {
-
-        List<Product> products = new ArrayList<Product>();
+    public void testGetAllProductsNotEquals() throws IOException {
+        //given
+        List<Product> products = new ArrayList<>();
         products.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
+                Color.RED, 15));
         products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
+                Color.BLACK, 5, 43, SkinType.ARTIFICIAL));
         products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+                Color.BLACK, 10, "S", Material.JEANS));
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        List<Product> productsFromTestClass = productServiceImpl.getAllProducts();
+        //when
+        List<Product> productsFromTestClass = sut.getAllProducts();
 
-
-
-        List<Product> products2 = new ArrayList<Product>();
+        List<Product> products2 = new ArrayList<>();
         products2.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
+                Color.RED, 15));
 
-
-        Assert.assertNotEquals(products2, productsFromTestClass);
+        //then
+        assertNotEquals(products2, productsFromTestClass);
     }
 
     @Test
-    public void testGetCounterProduct() {
+    public void testGetCounterProduct() throws IOException {
+        //given
+        List<Product> products = prepareProductList();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+        //when
+        int couterProducts = sut.getCountProducts();
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        int couterProducts = productServiceImpl.getCounterProducts();
-
-        Assert.assertEquals(products.size(), couterProducts);
+        //then
+        assertEquals(products.size(), couterProducts);
     }
 
     @Test
-    public void testGetCounterProductNoEquals() {
+    public void testGetCounterProductNoEquals() throws IOException {
+        //given
+        prepareProductList();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+        int couterProducts = sut.getCountProducts();
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        int couterProducts = productServiceImpl.getCounterProducts();
-
-        Assert.assertNotEquals(couterProducts, 11);
+        //then
+        assertNotEquals(11, couterProducts);
     }
 
     @Test
-    public void testGetProductByProductName() {
+    public void testGetProductByProductName() throws IOException {
+        //given
+        List<Product> products = prepareProductList();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+        //when
+        Product productFromTestClass = sut.getProductByProductName("Jacket");
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        Product productFromTestClass = productServiceImpl.getProductByProductName("Jacket");
-
-        Assert.assertEquals(products.get(2), productFromTestClass);
+        //then
+        assertEquals(products.get(2), productFromTestClass);
     }
 
     @Test
-    public void testGetProductByProductNameReturnNull() {
+    public void testGetProductByProductNameReturnNull() throws IOException {
+        //given
+        prepareProductList();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+        //when
+        Product productFromTestClass = sut.getProductByProductName("Wiesław");
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        Product productFromTestClass = productServiceImpl.getProductByProductName("Wiesław");
-
-        Assert.assertEquals(null, productFromTestClass);
+        //then
+        assertNull(productFromTestClass);
     }
 
     @Test
-    public void testGetProductByProductNameNoEquals() {
+    public void testGetProductByProductNameNoEquals() throws IOException {
+        //given
+        List<Product> products = prepareProductList();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+        //when
+        Product productFromTestClass = sut.getProductByProductName("waldek");
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        Product productFromTestClass = productServiceImpl.getProductByProductName("waldek");
-
-        Assert.assertNotEquals(products.get(2), productFromTestClass);
+        //then
+        assertNotEquals(products.get(2), productFromTestClass);
     }
 
     @Test
-    public void testGetProductByProductNameNoEqualsReturnNull() {
+    public void testGetProductByProductNameNoEqualsReturnNull() throws IOException {
+        //given
+        List<Product> products = prepareProductList();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+        //when
+        Product productFromTestClass = sut.getProductByProductName("waldek");
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        Product productFromTestClass = productServiceImpl.getProductByProductName("waldek");
-
-        Assert.assertNotEquals(products.get(2), productFromTestClass);
+        //then
+        assertNotEquals(products.get(2), productFromTestClass);
     }
 
     @Test
+    @Disabled
     public void testCounterProductIsBiggerThanZero() {
+        //given
+        prepareProductList();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+        //when
+        //boolean biggerThanZero = sut.counterProductIsBiggerThanZero("Jacket");
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        boolean biggerThanZero = productServiceImpl.counterProductIsBiggerThanZero("Jacket");
-
-        Assert.assertEquals(true, biggerThanZero);
+        //then
+        //assertTrue(biggerThanZero);
     }
 
     @Test
+    @Disabled
     public void testCounterProductIsBiggerThanZeroNoEquals() {
+        //given
+        prepareProductList();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+        //when
+        //boolean biggerThanZero = sut.counterProductIsBiggerThanZero("Jacket");
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        boolean biggerThanZero = productServiceImpl.counterProductIsBiggerThanZero("Jacket");
-
-        Assert.assertNotEquals(false, biggerThanZero);
+        //then
+        //assertNotEquals(SkinType.ARTIFICIAL, biggerThanZero);
     }
 
     @Test
+    @Disabled
     public void testProductNameDoesExist() {
+        //given
+        prepareProductList();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+        //when
+        //boolean productIsExist = sut.productNameDoesExist("Jacket");
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        boolean productIsExist = productServiceImpl.productNameDoesExist("Jacket");
-
-        Assert.assertEquals(true, productIsExist);
+        //then
+        //Assert.assertEquals(true, productIsExist);
     }
 
     @Test
+    @Disabled
     public void testProductNameDoesExistNoEquals() {
+        //given
+        List<Product> products = prepareProductList();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1l, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2l, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3l, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+        //when
+        //boolean productIsExist = sut.productNameDoesExist("Jacket2");
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        boolean productIsExist = productServiceImpl.productNameDoesExist("Jacket2");
-
-        Assert.assertNotEquals(null, productIsExist);
+        //then
+        //Assert.assertNotEquals(null, productIsExist);
     }
 
     @Test
+    @Disabled
     public void testProductByIdDoesExist() {
+        //given
+        prepareProductList();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1L, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+        //when
+        //boolean productIsExist = sut.productByIdDoesExist(1l);
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        boolean productIsExist = productServiceImpl.productByIdDoesExist(1l);
-
-        Assert.assertEquals(true, productIsExist);
+        //then
+        //Assert.assertEquals(true, productIsExist);
     }
 
     @Test
+    @Disabled
     public void testProductByIdDoesExistNoEquals() {
+        //given
+        List<Product> products = prepareProductList();
 
-        List<Product> products = new ArrayList<Product>();
-        products.add(new Product(1l, "Testowy", 14.99, 1.5f,
-                "Red", 15));
-        products.add(new Boots(2l, "Obuwie testowe", 99.99, 1.00f,
-                "Black", 5, 43, false));
-        products.add(new Cloth(3l, "Jacket", 199.99, 1.5f,
-                "Blue", 10, "S", "Jeans"));
+        //when
+        //boolean productIsExist = sut.productByIdDoesExist(45l);
 
-        ProductServiceImpl productServiceImpl = new ProductServiceImpl(products);
-        boolean productIsExist = productServiceImpl.productByIdDoesExist(45l);
+        //then
+        //Assert.assertNotEquals(null, productIsExist);
+    }
 
-        Assert.assertNotEquals(null, productIsExist);
-    }*/
+    private static List<Product> prepareProductList() {
+        List<Product> products = new ArrayList<>();
+        products.add(new Product(1L,
+                                 "Testowy",
+                                 14.99,
+                                 1.5f,
+                                 Color.RED,
+                                 15));
+        products.add(new Boots(2L,
+                                 "Obuwie testowe",
+                                 99.99,
+                                 1.00f,
+                                 Color.BLACK,
+                                 5,
+                                 43,
+                                 SkinType.ARTIFICIAL));
+        products.add(new Cloth(3L,
+                               "Jacket",
+                               199.99,
+                               1.5f,
+                               Color.BLUE,
+                               10,
+                               "S",
+                               Material.JEANS));
+        return products;
+    }
 }
