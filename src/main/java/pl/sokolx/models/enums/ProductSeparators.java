@@ -4,7 +4,7 @@ public enum ProductSeparators {
 
     PRODUCT_SEPARATOR(","), PRODUCT_ID("P"), ClOTH_ID("C"), BOOTS_ID("B");
 
-    private String word;
+    private final String word;
 
     ProductSeparators(String word) {
         this.word = word;

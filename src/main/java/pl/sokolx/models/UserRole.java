@@ -1,9 +1,11 @@
 package pl.sokolx.models;
 
+import pl.sokolx.models.enums.RoleType;
+
 public class UserRole {
 
     private int roleId;
-    private RoleType roleName;
+    private final RoleType roleName;
 
     public UserRole(int roleId, RoleType roleName) {
         this.roleId = roleId;

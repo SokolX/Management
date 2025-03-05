@@ -1,6 +1,6 @@
 package pl.sokolx.models.parser;
 
-import pl.sokolx.models.RoleType;
+import pl.sokolx.models.enums.RoleType;
 import pl.sokolx.models.User;
 
 public class UserParser {

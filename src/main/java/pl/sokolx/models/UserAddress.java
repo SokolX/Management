@@ -3,7 +3,10 @@ package pl.sokolx.models;
 public class UserAddress {
 
     private Integer addressId;
-    private String cityName, zipCode, streetName, houseNumber;
+    private final String cityName;
+    private final String zipCode;
+    private final String streetName;
+    private final String houseNumber;
 
     public UserAddress(Integer addressId, String cityName, String zipCode, String streetName, String houseNumber) {
         this.addressId = addressId;
@@ -18,26 +21,6 @@ public class UserAddress {
         this.zipCode = zipCode;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
-    }
-
-    public Integer getAddressId() {
-        return addressId;
-    }
-
-    public String getCityName() {
-        return cityName;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public String getStreetName() {
-        return streetName;
-    }
-
-    public String getHouseNumber() {
-        return houseNumber;
     }
 
     @Override

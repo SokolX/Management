@@ -11,13 +11,12 @@ public class ProductValidator {
     private static ProductValidator instance = null;
 
     private ProductValidator() {
-
     }
 
     public static ProductValidator getInstance() {
         if (instance == null) {
             instance = new ProductValidator();
-        };
+        }
 
         return instance;
     }
@@ -43,7 +42,7 @@ public class ProductValidator {
     }
 
     private boolean isNameEmpty(String productName) {
-        return productName.length() == 0;
+        return productName.isEmpty();
     }
 
     private boolean isWeightNoPositive(Float weight) {

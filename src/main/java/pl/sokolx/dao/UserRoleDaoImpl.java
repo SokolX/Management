@@ -1,8 +1,7 @@
 package pl.sokolx.dao;
 
 import pl.sokolx.api.UserRoleDao;
-import pl.sokolx.models.RoleType;
-import pl.sokolx.models.UserAddress;
+import pl.sokolx.models.enums.RoleType;
 import pl.sokolx.models.UserRole;
 
 import java.sql.*;
@@ -35,7 +34,7 @@ public class UserRoleDaoImpl implements UserRoleDao {
     @Override
     public List<UserRole> getAllUserRoles() {
         List<UserRole> userRoles = new LinkedList<UserRole>();
-        Statement statement = null;
+        Statement statement;
         try {
             statement = connection.createStatement();
             String query = "select * from " + tableName;

@@ -7,6 +7,6 @@ public enum Material {
     COTTON,
     WOOL,
     POLYESTERS,
-    JEANS;
+    JEANS
 
 }

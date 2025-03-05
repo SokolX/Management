@@ -7,12 +7,12 @@ import java.io.PrintWriter;
 
 public class FileUtils {
 
-    public static void createNewFile(String fileName) throws IOException {
+    public static boolean createNewFile(String fileName) throws IOException {
         File file = new File(fileName);
-        file.createNewFile();
+        return file.createNewFile();
     }
 
-    public static void clearFile(String fileName) throws FileNotFoundException, FileNotFoundException {
+    public static void clearFile(String fileName) throws FileNotFoundException {
         PrintWriter pw = new PrintWriter(fileName);
         pw.close();
     }

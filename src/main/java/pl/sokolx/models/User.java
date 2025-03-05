@@ -1,12 +1,14 @@
 package pl.sokolx.models;
 
+import pl.sokolx.models.enums.RoleType;
+
 public class User {
 
     public final static String USER_SEPARATOR = ",";
 
     private Long userId;
     private String userLogin;
-    private String userPassword;
+    private final String userPassword;
     private String userFirstName;
     private String userLastName;
     private RoleType roleType;

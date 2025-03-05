@@ -11,7 +11,7 @@ import pl.sokolx.service.UserServiceImpl;
 public class UserRegisterLoginFacadeImpl implements UserRegisterLoginFacade {
 
     private static UserRegisterLoginFacade instance = null;
-    private UserService userService = UserServiceImpl.getInstance();
+    private final UserService userService = UserServiceImpl.getInstance();
 
     public UserRegisterLoginFacadeImpl() {
     }
@@ -42,10 +42,6 @@ public class UserRegisterLoginFacadeImpl implements UserRegisterLoginFacade {
 
     @Override
     public boolean loginUser(String login, String password) {
-        if (userService.isCorrectLoginAndPassword(login, password)) {
-            return true;
-        }
-
-        return false;
+        return userService.isCorrectLoginAndPassword(login, password);
     }
 }

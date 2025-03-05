@@ -9,6 +9,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static pl.sokolx.utils.FileUtils.createNewFile;
+
 public class ProductDaoImpl implements ProductDao {
 
     private static final String FILE_NAME = "./target/products.txt";
@@ -16,7 +18,7 @@ public class ProductDaoImpl implements ProductDao {
 
     private ProductDaoImpl() {
         try {
-            FileUtils.createNewFile(FILE_NAME);
+            createNewFile(FILE_NAME);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,7 +79,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public List<Product> getAllProducts() throws IOException {
-        List<Product> products = new ArrayList<Product>();
+        List<Product> products = new ArrayList<>();
         BufferedReader bufferedReader = new BufferedReader(new FileReader(FILE_NAME));
 
         String readLine = bufferedReader.readLine();
