@@ -21,7 +21,7 @@ public class ProductServiceTest {
     ProductServiceImpl sut = new ProductServiceImpl();
 
     @Test
-    public void testGetAllProducts() throws IOException {
+    public void shouldReturnedAllProducts() throws IOException {
         //given
         List<Product> expectedProducts = prepareProductList();
 
@@ -29,9 +29,6 @@ public class ProductServiceTest {
         List<Product> resultProducts = sut.getAllProducts();
 
         //then
-        for (int i = 0; i < expectedProducts.size(); i++) {
-            assertEquals(expectedProducts.get(i), resultProducts.get(i), "Mismatch at index " + i);
-        }
         assertEquals(expectedProducts, resultProducts);
     }
 
