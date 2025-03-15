@@ -13,7 +13,7 @@ import static pl.sokolx.utils.FileUtils.createNewFile;
 
 public class ProductDaoImpl implements ProductDao {
 
-    private static final String FILE_NAME = "./target/products.txt";
+    private static final String FILE_NAME = "./src/test/resources/products.csv";
     private static ProductDao instance = null;
 
     private ProductDaoImpl() {
