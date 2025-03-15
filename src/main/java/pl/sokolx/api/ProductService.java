@@ -15,9 +15,11 @@ public interface ProductService {
     Integer getCountProducts() throws IOException;
     Product getProductByProductName(String productName) throws IOException;
 
+    boolean isProductExistByName(String productName);
+    boolean isProductExistById(Long productId);
     boolean isProductOnWarehouse(String productName);
-    boolean isProductExist(String productName) throws IOException;
-    boolean isProductExist(Long productId) throws IOException;
+
+    boolean counterProductIsBiggerThanZero(String productName);
 
     boolean saveProduct(Product product) throws IOException, ProductWeightNoPositiveException, ProductNameEmptyException, ProductCountNegativeException, ProductPriceNoPositiveException;
     void removeProduct(String productName) throws Exception;

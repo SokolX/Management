@@ -20,7 +20,14 @@ public class ProductServiceImpl implements ProductService {
     private final ProductDao productDao = ProductDaoImpl.getInstance();
     private final ProductValidator productValidator = ProductValidator.getInstance();
 
+    List<Product> products;
+
     public ProductServiceImpl() {
+        this.products = new ArrayList<>();
+    }
+
+    public ProductServiceImpl(List<Product> products) {
+        this.products = products;
     }
 
     public static ProductServiceImpl getInstance() {
@@ -75,23 +82,10 @@ public class ProductServiceImpl implements ProductService {
         productDao.removeProductByName(productName);
     }
 
-    public boolean isProductExist(String productName) throws IOException {
-        Product product = null;
-        product = getProductByProductName(productName);
-        return product == null;
-    }
-
-    public boolean isProductExist(Long productId) throws IOException {
-        Product product = null;
-        product = getProductByProductId(productId);
-
-        return product == null;
-    }
-
     public boolean isProductOnWarehouse(String productName) {
         try {
             for(Product product : getAllProducts()) {
-                if (isProductExist(productName) && product.getProductCount() > 0) {
+                if (isProductExistByName(productName) && product.getProductCount() > 0) {
                     return true;
                 }
             }
@@ -107,6 +101,38 @@ public class ProductServiceImpl implements ProductService {
             return true;
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean counterProductIsBiggerThanZero(String productName) {
+
+        for (Product product : products) {
+            if (product.getProductName().equals(productName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isProductExistByName(String productName) {
+        for (Product product : products) {
+            if (product.getProductName().equals(productName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isProductExistById(Long productId) {
+        for (Product product : products) {
+            if (product.getProductId().equals(productId)) {
+                return true;
+            }
+        }
         return false;
     }
 }
