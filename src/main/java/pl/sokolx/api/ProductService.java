@@ -14,6 +14,7 @@ public interface ProductService {
     List<Product> getAllProducts() throws IOException;
     Integer getCountProducts() throws IOException;
     Product getProductByProductName(String productName) throws IOException;
+    Product getProductByProductId(Long productId) throws IOException;
 
     boolean isProductExistByName(String productName);
     boolean isProductExistById(Long productId);

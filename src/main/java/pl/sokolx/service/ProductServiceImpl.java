@@ -48,9 +48,8 @@ public class ProductServiceImpl implements ProductService {
         return getAllProducts().size();
     }
 
-
+    @Override
     public Product getProductByProductName(String productName) throws IOException {
-
         List<Product> products = getAllProducts();
 
         for (Product product : products) {
@@ -63,9 +62,8 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
-
+    @Override
     public Product getProductByProductId(Long productId) throws IOException {
-
         List<Product> products = getAllProducts();
 
         for (Product product : products) {
@@ -76,44 +74,6 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         return null;
-    }
-
-    public void removeProduct(String productName) throws Exception {
-        productDao.removeProductByName(productName);
-    }
-
-    public boolean isProductOnWarehouse(String productName) {
-        try {
-            for(Product product : getAllProducts()) {
-                if (isProductExistByName(productName) && product.getProductCount() > 0) {
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean saveProduct(Product product) throws IOException, ProductWeightNoPositiveException, ProductNameEmptyException, ProductCountNegativeException, ProductPriceNoPositiveException {
-        if (productValidator.isValidate(product)) {
-            productDao.saveProduct(product);
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean counterProductIsBiggerThanZero(String productName) {
-
-        for (Product product : products) {
-            if (product.getProductName().equals(productName)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override
@@ -134,5 +94,45 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean isProductOnWarehouse(String productName) {
+        try {
+            for(Product product : getAllProducts()) {
+                if (isProductExistByName(productName) && product.getProductCount() > 0) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean counterProductIsBiggerThanZero(String productName) {
+
+        for (Product product : products) {
+            if (product.getProductName().equals(productName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean saveProduct(Product product) throws IOException, ProductWeightNoPositiveException, ProductNameEmptyException, ProductCountNegativeException, ProductPriceNoPositiveException {
+        if (productValidator.isValidate(product)) {
+            productDao.saveProduct(product);
+            return true;
+        }
+
+        return false;
+    }
+
+    public void removeProduct(String productName) throws Exception {
+        productDao.removeProductByName(productName);
     }
 }
