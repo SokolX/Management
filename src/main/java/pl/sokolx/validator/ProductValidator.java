@@ -5,6 +5,9 @@ import pl.sokolx.exception.ProductNameEmptyException;
 import pl.sokolx.exception.ProductPriceNoPositiveException;
 import pl.sokolx.exception.ProductWeightNoPositiveException;
 import pl.sokolx.models.Product;
+import pl.sokolx.utils.BigDecimalComparatorUtil;
+
+import java.math.BigDecimal;
 
 public class ProductValidator {
 
@@ -53,8 +56,7 @@ public class ProductValidator {
         return productCount < 0;
     }
 
-    private boolean isPriceNoPositive(Double price) {
-        return price <= 0;
+    private boolean isPriceNoPositive(BigDecimal price) {
+        return BigDecimalComparatorUtil.isLessOrEqualThen(price, BigDecimal.ZERO);
     }
-
 }

@@ -4,6 +4,8 @@ import pl.sokolx.models.enums.Color;
 import pl.sokolx.models.enums.Material;
 import pl.sokolx.models.enums.ProductSeparators;
 
+import java.math.BigDecimal;
+
 public class Cloth extends Product {
 
     private final String clothSize;
@@ -11,7 +13,7 @@ public class Cloth extends Product {
 
     public Cloth(Long productId,
                  String productName,
-                 double productPrice,
+                 BigDecimal productPrice,
                  float productWeight,
                  Color productColor,
                  int productCount,
@@ -30,7 +32,7 @@ public class Cloth extends Product {
     @Override
     public String toString() {
         return ProductSeparators.BOOTS_ID + ProductSeparators.PRODUCT_SEPARATOR.toString()
-                + getBasicProductString()
+                + getBasicProductString() + ProductSeparators.PRODUCT_SEPARATOR
                 + clothSize + ProductSeparators.PRODUCT_SEPARATOR
                 + material;
     }

@@ -3,18 +3,21 @@ package pl.sokolx.models;
 import pl.sokolx.models.enums.Color;
 import pl.sokolx.models.enums.ProductSeparators;
 
+import java.math.BigDecimal;
+import java.util.Objects;
+
 public class Product {
 
     private final Long productId;
     private final String productName;
-    private final double productPrice;
+    private final BigDecimal productPrice;
     private final float productWeight;
     private final Color productColor;
     private final int productCount;
 
     public Product(Long productId,
                    String productName,
-                   double productPrice,
+                   BigDecimal productPrice,
                    float productWeight,
                    Color productColor,
                    int productCount) {
@@ -34,7 +37,7 @@ public class Product {
         return productName;
     }
 
-    public double getProductPrice() {
+    public BigDecimal getProductPrice() {
         return productPrice;
     }
 
@@ -53,6 +56,25 @@ public class Product {
                 + productWeight + ProductSeparators.PRODUCT_SEPARATOR
                 + productColor + ProductSeparators.PRODUCT_SEPARATOR
                 + productCount;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Product product = (Product) obj;
+        return Float.compare(product.productWeight, productWeight) == 0 &&
+                productCount == product.productCount &&
+                Objects.equals(productId, product.productId) &&
+                Objects.equals(productName, product.productName) &&
+                Objects.equals(productPrice, product.productPrice) &&
+                Objects.equals(productColor, product.productColor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, productName, productPrice, productWeight, productColor, productCount);
     }
 
     @Override

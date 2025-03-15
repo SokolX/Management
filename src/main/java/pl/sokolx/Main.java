@@ -1,11 +1,7 @@
 package pl.sokolx;
 
 import pl.sokolx.api.ProductFacade;
-import pl.sokolx.api.UserDao;
 import pl.sokolx.api.UserRegisterLoginFacade;
-import pl.sokolx.api.UserRoleDao;
-import pl.sokolx.dao.UserDaoImpl;
-import pl.sokolx.dao.UserRoleDaoImpl;
 import pl.sokolx.facade.ProductFacadeImpl;
 import pl.sokolx.facade.UserRegisterLoginFacadeImpl;
 import pl.sokolx.models.*;
@@ -16,7 +12,7 @@ import pl.sokolx.models.parser.ColorParser;
 import pl.sokolx.models.parser.MaterialParser;
 import pl.sokolx.models.parser.SkinParser;
 
-import java.io.*;
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Main {
@@ -47,13 +43,14 @@ public class Main {
     public static Product createOtherProduct() {
         String productName;
         Color color;
-        Float price, weight;
+        BigDecimal price;
+        Float weight;
         Integer count;
         System.out.println("ProductName: ");
         productName = scanner.next();
 
         System.out.println("Price: ");
-        price = scanner.nextFloat();
+        price = BigDecimal.valueOf(scanner.nextFloat());
 
         System.out.println("Weight: ");
         weight = scanner.nextFloat();
@@ -71,7 +68,8 @@ public class Main {
     public static Product createBootsProduct() {
         String productName;
         Color color;
-        Float price, weight;
+        BigDecimal price;
+        Float weight;
         Integer count, size;
         SkinType skinType;
 
@@ -79,7 +77,7 @@ public class Main {
         productName = scanner.next();
 
         System.out.println("Price: ");
-        price = scanner.nextFloat();
+        price = BigDecimal.valueOf(scanner.nextFloat());
 
         System.out.println("Weight: ");
         weight = scanner.nextFloat();
@@ -103,7 +101,8 @@ public class Main {
     public static Product createClothProduct() {
         String productName, size;
         Color color;
-        Float price, weight;
+        BigDecimal price;
+        Float weight;
         Integer count;
         Material material;
 
@@ -111,7 +110,7 @@ public class Main {
         productName = scanner.next();
 
         System.out.println("Price: ");
-        price = scanner.nextFloat();
+        price = BigDecimal.valueOf(scanner.nextFloat());
 
         System.out.println("Weight: ");
         weight = scanner.nextFloat();
@@ -178,18 +177,12 @@ public class Main {
                     case 1:
                         productTypeMenu();
                         read = scanner.nextInt();
-                        Product product = null;
-                        switch (read) {
-                            case 1:
-                                product = createBootsProduct();
-                                break;
-                            case 2:
-                                product = createClothProduct();
-                                break;
-                            case 3:
-                                product = createOtherProduct();
-                                break;
-                        }
+                        Product product = switch (read) {
+                            case 1 -> createBootsProduct();
+                            case 2 -> createClothProduct();
+                            case 3 -> createOtherProduct();
+                            default -> null;
+                        };
                         System.out.println(productFacade.createProduct(product));
                         break;
                     case 2:
@@ -205,12 +198,7 @@ public class Main {
                         loggedOn = false;
                         break;
                 }
-
-
             }
-
-
         }
     }
-
 }

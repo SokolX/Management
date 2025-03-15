@@ -4,6 +4,8 @@ import pl.sokolx.models.enums.Color;
 import pl.sokolx.models.enums.ProductSeparators;
 import pl.sokolx.models.enums.SkinType;
 
+import java.math.BigDecimal;
+
 public class Boots extends Product {
 
     private final int bootsSize;
@@ -11,7 +13,7 @@ public class Boots extends Product {
 
     public Boots(Long productId,
                  String productName,
-                 double productPrice,
+                 BigDecimal productPrice,
                  float productWeight,
                  Color productColor,
                  int productCount,

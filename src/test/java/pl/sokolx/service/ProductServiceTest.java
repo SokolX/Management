@@ -10,6 +10,7 @@ import pl.sokolx.models.enums.Material;
 import pl.sokolx.models.enums.SkinType;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,31 +23,34 @@ public class ProductServiceTest {
     @Test
     public void testGetAllProducts() throws IOException {
         //given
-        List<Product> products = prepareProductList();
+        List<Product> expectedProducts = prepareProductList();
 
         //when
-        List<Product> productsFromTestClass = sut.getAllProducts();
+        List<Product> resultProducts = sut.getAllProducts();
 
         //then
-        assertEquals(products, productsFromTestClass);
+        for (int i = 0; i < expectedProducts.size(); i++) {
+            assertEquals(expectedProducts.get(i), resultProducts.get(i), "Mismatch at index " + i);
+        }
+        assertEquals(expectedProducts, resultProducts);
     }
 
     @Test
     public void testGetAllProductsNotEquals() throws IOException {
         //given
         List<Product> products = new ArrayList<>();
-        products.add(new Product(1L, "Testowy", 14.99, 1.5f,
+        products.add(new Product(1L, "Testowy", BigDecimal.valueOf(14.99), 1.5f,
                 Color.RED, 15));
-        products.add(new Boots(2L, "Obuwie testowe", 99.99, 1.00f,
+        products.add(new Boots(2L, "Obuwie testowe", BigDecimal.valueOf(99.99), 1.00f,
                 Color.BLACK, 5, 43, SkinType.ARTIFICIAL));
-        products.add(new Cloth(3L, "Jacket", 199.99, 1.5f,
+        products.add(new Cloth(3L, "Jacket", BigDecimal.valueOf(199.99), 1.5f,
                 Color.BLACK, 10, "S", Material.JEANS));
 
         //when
         List<Product> productsFromTestClass = sut.getAllProducts();
 
         List<Product> products2 = new ArrayList<>();
-        products2.add(new Product(1L, "Testowy", 14.99, 1.5f,
+        products2.add(new Product(1L, "Testowy", BigDecimal.valueOf(14.99), 1.5f,
                 Color.RED, 15));
 
         //then
@@ -206,13 +210,13 @@ public class ProductServiceTest {
         List<Product> products = new ArrayList<>();
         products.add(new Product(1L,
                                  "Testowy",
-                                 14.99,
+                                 BigDecimal.valueOf(14.99),
                                  1.5f,
                                  Color.RED,
                                  15));
         products.add(new Boots(2L,
                                  "Obuwie testowe",
-                                 99.99,
+                                 BigDecimal.valueOf(99.99),
                                  1.00f,
                                  Color.BLACK,
                                  5,
@@ -220,7 +224,7 @@ public class ProductServiceTest {
                                  SkinType.ARTIFICIAL));
         products.add(new Cloth(3L,
                                "Jacket",
-                               199.99,
+                               BigDecimal.valueOf(199.99),
                                1.5f,
                                Color.BLUE,
                                10,
