@@ -1,6 +1,11 @@
 package pl.sokolx.service;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import pl.sokolx.exception.ProductCountNegativeException;
+import pl.sokolx.exception.ProductNameEmptyException;
+import pl.sokolx.exception.ProductPriceNoPositiveException;
+import pl.sokolx.exception.ProductWeightNoPositiveException;
 import pl.sokolx.models.Boots;
 import pl.sokolx.models.Cloth;
 import pl.sokolx.models.Product;
@@ -137,6 +142,23 @@ public class ProductServiceTest {
     public void returnFalseWhenProductByIdDoesNotExist() {
         //given when then
         assertTrue(sut.isProductExistById(1L));
+    }
+
+    @Test
+    @Disabled
+    public void shouldReturnTrueWhenProductSaved() throws ProductWeightNoPositiveException, ProductCountNegativeException, ProductPriceNoPositiveException, ProductNameEmptyException, IOException {
+        //given
+        Product productToSave = new Cloth(4L,
+                "Tshirt",
+                BigDecimal.valueOf(59.99),
+                1.5f,
+                Color.BLUE,
+                10,
+                "S",
+                Material.COTTON);
+
+        //when then
+        assertTrue(sut.saveProduct(productToSave));
     }
 
     private static List<Product> prepareProductList() {
