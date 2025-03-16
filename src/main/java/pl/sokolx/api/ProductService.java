@@ -18,7 +18,7 @@ public interface ProductService {
 
     boolean isProductExistByName(String productName);
     boolean isProductExistById(Long productId);
-    boolean isProductOnWarehouse(String productName);
+    boolean isProductOnWarehouse(String productName) throws IOException;
 
     boolean counterProductIsBiggerThanZero(String productName);
 

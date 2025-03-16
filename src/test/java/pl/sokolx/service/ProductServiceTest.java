@@ -50,74 +50,57 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testGetCounterProduct() throws IOException {
-        //given
-        List<Product> products = prepareProductList();
-
-        //when
-        int couterProducts = sut.getCountProducts();
-
-        //then
-        assertEquals(products.size(), couterProducts);
+    public void shouldReturnCorrectNumberOfProducts() throws IOException {
+        //given when then
+        assertEquals(prepareProductList().size(), sut.getCountProducts());
     }
 
     @Test
-    public void testGetCounterProductNoEquals() throws IOException {
-        //given
-        prepareProductList();
-
-        int couterProducts = sut.getCountProducts();
-
-        //then
-        assertNotEquals(11, couterProducts);
+    public void shouldReturnInorrectNumberOfProducts() throws IOException {
+        //given when then
+        assertNotEquals(11, sut.getCountProducts());
     }
 
     @Test
-    public void testGetProductByProductName() throws IOException {
-        //given
-        List<Product> products = prepareProductList();
-
-        //when
-        Product productFromTestClass = sut.getProductByProductName("Jacket");
-
-        //then
-        assertEquals(products.get(2), productFromTestClass);
+    public void shouldReturnProductWhenProductByProductNameDoesExist() throws IOException {
+        //given when then
+        assertEquals(prepareProductList().get(2), sut.getProductByProductName("Jacket"));
     }
 
     @Test
-    public void testGetProductByProductNameReturnNull() throws IOException {
-        //given
-        prepareProductList();
-
-        //when
-        Product productFromTestClass = sut.getProductByProductName("Wiesław");
-
-        //then
-        assertNull(productFromTestClass);
+    public void shouldReturnNullWhenProductByProductNameDoesNotExist() throws IOException {
+        //given when then
+        assertNull(sut.getProductByProductName("DoesNotExist"));
     }
 
     @Test
-    public void testGetProductByProductNameNoEquals() throws IOException {
-        //given
-        List<Product> products = prepareProductList();
-
-        //when
-        Product productFromTestClass = sut.getProductByProductName("waldek");
-
-        //then
-        assertNotEquals(products.get(2), productFromTestClass);
+    public void shouldReturnProductWhenProductByProductIdDoesExist() throws IOException {
+        //given when then
+        assertEquals(prepareProductList().get(2), sut.getProductByProductId(3L));
     }
 
     @Test
-    public void testGetProductByProductNameNoEqualsReturnNull() throws IOException {
-        //given
-        List<Product> products = prepareProductList();
+    public void shouldReturnNullWhenProductByProductIdDoesNotExist() throws IOException {
+        //given when then
+        assertNull(sut.getProductByProductId(9999L));
+    }
 
-        //when
-        Product productFromTestClass = sut.getProductByProductName("waldek");
+    @Test
+    public void shouldReturnTrueWhenProductuIsOnWarenhouse() throws IOException {
+        //given when then
+        assertTrue(sut.isProductOnWarehouse("Jacket"));
+    }
 
-        //then
-        assertNotEquals(products.get(2), productFromTestClass);
+    @Test
+    public void shouldReturnFalseWhenProductNameIsNotOnWarenhouse() throws IOException {
+        //given when then
+        assertFalse(sut.isProductOnWarehouse("DoesNotExist"));
+    }
+
+    @Test
+    public void shouldReturnFalseWhenProductCountIsZeroOnWarenhouse() throws IOException {
+        //given when then
+        assertFalse(sut.isProductOnWarehouse("Testowy"));
     }
 
     @Test
@@ -163,7 +146,7 @@ public class ProductServiceTest {
                                  BigDecimal.valueOf(14.99),
                                  1.5f,
                                  Color.RED,
-                                 15));
+                                 0));
         products.add(new Boots(2L,
                                  "Obuwie testowe",
                                  BigDecimal.valueOf(99.99),

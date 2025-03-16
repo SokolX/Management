@@ -97,17 +97,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean isProductOnWarehouse(String productName) {
-        try {
-            for(Product product : getAllProducts()) {
-                if (isProductExistByName(productName) && product.getProductCount() > 0) {
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public boolean isProductOnWarehouse(String productName) throws IOException {
+        Product product = getProductByProductName(productName);
+        return product != null && isProductAvailableInWarehouse(product);
     }
 
     @Override
@@ -134,5 +126,9 @@ public class ProductServiceImpl implements ProductService {
 
     public void removeProduct(String productName) throws Exception {
         productDao.removeProductByName(productName);
+    }
+
+    private boolean isProductAvailableInWarehouse(Product product) {
+        return product.getProductCount() > 0;
     }
 }
